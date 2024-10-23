@@ -1,24 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import Languages from "./Languages";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const Display = () => {
-  const [languages, setLanguages] = useState([]);
+  const queryClient = useQueryClient();
   const languageRef = useRef();
 
   const getData = async () => {
-    try {
-      const res = await fetch(import.meta.env.VITE_SERVER + "/lab/languages");
+    const res = await fetch(import.meta.env.VITE_SERVER + "/lab/languages");
 
-      if (!res.ok) {
-        throw new Error("getting data error");
-      }
-
-      const data = await res.json();
-      setLanguages(data);
-    } catch (error) {
-      console.error(error.message);
+    if (!res.ok) {
+      throw new Error("getting data error");
     }
+
+    const data = await res.json();
+    return data;
   };
+
+  const query = useQuery({
+    queryKey: ["languages"],
+    queryFn: getData,
+  });
 
   const addLanguage = async () => {
     const res = await fetch(import.meta.env.VITE_SERVER + "/lab/languages", {
@@ -34,29 +36,15 @@ const Display = () => {
     if (!res.ok) {
       throw new Error("cannot add language");
     }
-
-    getData();
-    languageRef.current.value = "";
   };
 
-  const deleteLanguage = async (language) => {
-    const res = await fetch(
-      import.meta.env.VITE_SERVER + "/lab/languages/" + language,
-      {
-        method: "DELETE",
-        headers: { "Content-type": "application/json" },
-      }
-    );
-
-    if (!res.ok) {
-      throw new Error("cannot delete language");
-    }
-    getData();
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
+  const mutation = useMutation({
+    mutationFn: addLanguage,
+    onSuccess: () => {
+      languageRef.current.value = "";
+      queryClient.invalidateQueries(["languages"]); // means tell the client that the existing data is not valid, go get new ones.
+    },
+  });
 
   return (
     <div className="row">
@@ -71,7 +59,7 @@ const Display = () => {
           className="col-md-6"
         />
 
-        <button className="col-md-3" onClick={addLanguage}>
+        <button className="col-md-3" onClick={mutation.mutate}>
           add
         </button>
       </div>
@@ -82,16 +70,10 @@ const Display = () => {
         <br />
       </div>
       <br />
-      {languages.map((item, idx) => {
-        return (
-          <Languages
-            key={idx}
-            id={idx}
-            language={item.language}
-            deleteLanguage={deleteLanguage}
-          />
-        );
-      })}
+      {query.isSuccess &&
+        query.data.map((item, idx) => {
+          return <Languages key={idx} id={idx} language={item.language} />;
+        })}
     </div>
   );
 };
