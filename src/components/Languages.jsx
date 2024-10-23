@@ -28,7 +28,7 @@ const Languages = (props) => {
     <>
       <div className={`row ${styles.languages}`}>
         <div className="col-sm-6">{props.language}</div>
-        <button className="col-sm-3" onClick={mutation.mutate}>
+        <button className="col-sm-6" onClick={mutation.mutate}>
           delete
         </button>
       </div>
