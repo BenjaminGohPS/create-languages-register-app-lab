@@ -135,10 +135,8 @@ const Display = () => {
       <div className="col-md-1"></div>
       <div className="col-md-5">
         {queryUser.isSuccess &&
-          queryUser.data.map((item, idx) => {
-            return (
-              <Users key={idx} id={idx} name={item.name} user_id={item.id} />
-            );
+          queryUser.data.map((item) => {
+            return <Users key={item.id} name={item.name} id={item.id} />;
           })}
       </div>
     </div>
