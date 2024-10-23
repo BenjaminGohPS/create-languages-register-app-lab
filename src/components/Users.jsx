@@ -1,9 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Users.module.css";
+import UpdateModal from "./UpdateModal";
 
 const Users = (props) => {
   const queryClient = useQueryClient();
+  const [showUpDateModal, setShowUpdateModal] = useState(false);
 
   const deleteUser = async () => {
     const res = await fetch(import.meta.env.VITE_SERVER + "/lab/users", {
@@ -23,15 +25,24 @@ const Users = (props) => {
   });
 
   return (
-    <div className={`row ${styles.users}`}>
-      <div className="col-sm-4">{props.name}</div>
-      <button className="col-sm-4" onClick={() => setShowUpdateModal(true)}>
-        update
-      </button>
-      <button className="col-sm-4" onClick={mutation.mutate}>
-        delete
-      </button>
-    </div>
+    <>
+      {showUpDateModal && (
+        <UpdateModal
+          id={props.id}
+          name={props.name}
+          setShowUpdateModal={setShowUpdateModal}
+        />
+      )}
+      <div className={`row ${styles.users}`}>
+        <div className="col-sm-4">{props.name}</div>
+        <button className="col-sm-4" onClick={() => setShowUpdateModal(true)}>
+          update
+        </button>
+        <button className="col-sm-4" onClick={mutation.mutate}>
+          delete
+        </button>
+      </div>
+    </>
   );
 };
 
