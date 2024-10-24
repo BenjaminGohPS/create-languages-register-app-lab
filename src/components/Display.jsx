@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import Languages from "./Languages";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Users from "./Users";
+import UserDetails from "./UserDetails";
 
 const Display = () => {
   const queryClient = useQueryClient();
   const languageRef = useRef();
   const nameRef = useRef();
+  const [selection, setSelection] = useState();
 
   const getData = async () => {
     const res = await fetch(import.meta.env.VITE_SERVER + "/lab/languages");
@@ -88,56 +90,96 @@ const Display = () => {
     },
   });
 
+  const handleSelectionChange = (event) => {
+    setSelection(event.target.value);
+  };
+
   return (
-    <div className="row">
-      <h1>Languages</h1>
-      <br />
+    <div className="container">
       <div className="row">
-        <input
-          type="text"
-          ref={languageRef}
-          placeholder="language"
-          className="col-md-3"
-        />
-
-        <button className="col-md-2" onClick={mutation.mutate}>
-          add
-        </button>
-
-        <div className="col-md-1"></div>
-
-        <input
-          type="text"
-          ref={nameRef}
-          placeholder="name"
-          className="col-md-3"
-        />
-
-        <button className="col-md-2" onClick={mutationUser.mutate}>
-          add
-        </button>
-      </div>
-      <br />
-
-      <div className="row">
-        <div className="col-md-2">Language</div>
-        <div className="col-md-4"></div>
-        <div className="col-md-1">User</div>
+        <h1>Languages</h1>
         <br />
+        <div className="row">
+          <input
+            type="text"
+            ref={languageRef}
+            placeholder="language"
+            className="col-md-3"
+          />
+
+          <button className="col-md-2" onClick={mutation.mutate}>
+            add
+          </button>
+
+          <div className="col-md-1"></div>
+
+          <input
+            type="text"
+            ref={nameRef}
+            placeholder="name"
+            className="col-md-3"
+          />
+
+          <button className="col-md-2" onClick={mutationUser.mutate}>
+            add
+          </button>
+        </div>
+        <br />
+
+        <div className="row">
+          <div className="col-md-2">Language</div>
+          <div className="col-md-4"></div>
+          <div className="col-md-1">User</div>
+          {queryUser.data.length}
+          <br />
+        </div>
+        <br />
+        <div className="col-md-5">
+          {query.isSuccess &&
+            query.data.map((item, idx) => {
+              return <Languages key={idx} id={idx} language={item.language} />;
+            })}
+        </div>
+        <div className="col-md-1"></div>
+        <div className="col-md-5">
+          {queryUser.isSuccess &&
+            queryUser.data.map((item) => {
+              return <Users key={item.id} name={item.name} id={item.id} />;
+            })}
+        </div>
       </div>
       <br />
-      <div className="col-md-5">
-        {query.isSuccess &&
-          query.data.map((item, idx) => {
-            return <Languages key={idx} id={idx} language={item.language} />;
-          })}
-      </div>
-      <div className="col-md-1"></div>
-      <div className="col-md-5">
-        {queryUser.isSuccess &&
-          queryUser.data.map((item) => {
-            return <Users key={item.id} name={item.name} id={item.id} />;
-          })}
+
+      <div className="row">
+        <h1>Schedule for Users</h1>
+        <br />
+        <div className="row">
+          <div className="col-md-3"></div>
+          <div className="col-md-6">
+            <select
+              id="selection"
+              className="col-md-6"
+              onChange={handleSelectionChange}
+              value={selection}
+            >
+              {queryUser.isSuccess &&
+                queryUser.data.map((item) => {
+                  return (
+                    <option key={item.id} id={item.id} value={item.name}>
+                      {item.name}
+                    </option>
+                  );
+                })}
+            </select>
+
+            <div className="col-md-3"></div>
+          </div>
+          <br />
+          <div className="row">
+            <div className="col-md-12">TEST</div>
+            
+          </div>
+        </div>
       </div>
     </div>
   );
