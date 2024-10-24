@@ -16,8 +16,8 @@ const OverLay = (props) => {
         method: "PUT",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({
-          user_id: props.selection,
-          language: languageRef.current.value,
+          user_id: props.selectionId,
+          language: selection,
         }),
       }
     );
@@ -29,7 +29,6 @@ const OverLay = (props) => {
   const mutation = useMutation({
     mutationFn: addUserLanguage,
     onSuccess: () => {
-      languageRef.current.value = "";
       props.setShowUpdateLanguageModal(false);
       queryClient.invalidateQueries(["userLanguage"]);
     },
@@ -74,7 +73,7 @@ const OverLay = (props) => {
         <br />
 
         <div className="row">
-          <div className="col-md-3"></div>
+          <div className="col-md-3">{selection}</div>
           <button className="col-md-3" onClick={mutation.mutate}>
             add
           </button>
@@ -99,7 +98,7 @@ const UpdateLanguageModal = (props) => {
     <>
       {ReactDOM.createPortal(
         <OverLay
-          selection={props.selection}
+          selectionId={props.selection}
           setShowUpdateLanguageModal={props.setShowUpdateLanguageModal}
           query={props.query}
         />,
