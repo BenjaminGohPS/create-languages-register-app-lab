@@ -30,7 +30,7 @@ const UserDetails = (props) => {
 
   return (
     <>
-      <div className={`row ${styles.UserDetails}`} key={props.idx}>
+      <div className={`row ${styles.userDetails}`} key={props.idx}>
         <div className="col-sm-6">{props.item}</div>
         <button className="col-sm-6" onClick={mutation.mutate}>
           delete

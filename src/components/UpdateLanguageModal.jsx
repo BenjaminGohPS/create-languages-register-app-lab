@@ -5,9 +5,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const OverLay = (props) => {
   const queryClient = useQueryClient();
-  const languageRef = useRef();
-  const nameRef = useRef();
-  const [selection, setSelection] = useState();
+
+  const [selection, setSelection] = useState("C#");
 
   const addUserLanguage = async () => {
     const res = await fetch(
@@ -61,7 +60,7 @@ const OverLay = (props) => {
               {props.query.isSuccess &&
                 props.query.data.map((item, idx) => {
                   return (
-                    <option key={idx} id={idx} value={item.lanuage}>
+                    <option key={idx} id={idx} value={item.language}>
                       {item.language}
                     </option>
                   );
@@ -73,7 +72,7 @@ const OverLay = (props) => {
         <br />
 
         <div className="row">
-          <div className="col-md-3">{selection}</div>
+          <div className="col-md-3"></div>
           <button className="col-md-3" onClick={mutation.mutate}>
             add
           </button>

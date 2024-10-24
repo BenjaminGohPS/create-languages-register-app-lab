@@ -9,7 +9,7 @@ const Display = () => {
   const queryClient = useQueryClient();
   const languageRef = useRef();
   const nameRef = useRef();
-  const [selection, setSelection] = useState();
+  const [selection, setSelection] = useState(10);
   const [showUpdateLanguageModal, setShowUpdateLanguageModal] = useState(false);
 
   const getData = async () => {
@@ -182,7 +182,7 @@ const Display = () => {
         <div className="row">
           <div className="col-md-5"></div>
           <div className="col-md-2">
-            <select
+            <select 
               id={"selection"}
               className="col-md-12"
               onChange={handleSelectionChange}
@@ -191,8 +191,8 @@ const Display = () => {
               {queryUser.isSuccess &&
                 queryUser.data.map((item) => {
                   return (
-                    <option key={item.id} id={item.id} value={item.id}>
-                      {item.name}
+                    <option key={item.id} id={item.id} value={item.id} >
+                      {item.name} 
                     </option>
                   );
                 })}
@@ -226,15 +226,6 @@ const Display = () => {
                         item={item}
                       />
 
-                      // <div
-                      //   key={idx}
-                      //   id={idx}
-                      //   value={item.name}
-                      //   selection={selection}
-                      //   item={item}
-                      // >
-                      //   {item}
-                      // </div>
                     );
                   })}
               </div>
