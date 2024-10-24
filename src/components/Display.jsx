@@ -92,7 +92,31 @@ const Display = () => {
 
   const handleSelectionChange = (event) => {
     setSelection(event.target.value);
+    getUserLanguage();
   };
+
+  const getUserLanguage = async () => {
+    const res = await fetch(
+      import.meta.env.VITE_SERVER + "/lab/users/languages",
+      {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ user_id: selection }),
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error("getting user language error");
+    }
+
+    const data = await res.json();
+    return data;
+  };
+
+  const queryUserLanguage = useQuery({
+    queryKey: ["userLanguage", selection],
+    queryFn: getUserLanguage,
+  });
 
   return (
     <div className="container">
@@ -130,7 +154,7 @@ const Display = () => {
           <div className="col-md-2">Language</div>
           <div className="col-md-4"></div>
           <div className="col-md-1">User</div>
-          {queryUser.data.length}
+
           <br />
         </div>
         <br />
@@ -152,12 +176,13 @@ const Display = () => {
 
       <div className="row">
         <h1>Schedule for Users</h1>
+        {console.log({ selection })}
         <br />
         <div className="row">
           <div className="col-md-3"></div>
           <div className="col-md-6">
             <select
-              id="selection"
+              id={"selection"}
               className="col-md-6"
               onChange={handleSelectionChange}
               value={selection}
@@ -165,7 +190,7 @@ const Display = () => {
               {queryUser.isSuccess &&
                 queryUser.data.map((item) => {
                   return (
-                    <option key={item.id} id={item.id} value={item.name}>
+                    <option key={item.id} id={item.id} value={item.id}>
                       {item.name}
                     </option>
                   );
@@ -177,7 +202,19 @@ const Display = () => {
           <br />
           <div className="row">
             <div className="col-md-12">TEST</div>
-            
+            <>
+              <div>
+                Known Languages: 
+                {queryUserLanguage.isSuccess &&
+                  queryUserLanguage.data.map((item, idx) => {
+                    return (
+                      <div key={idx} id={idx} value={item.name}>
+                        {item}
+                      </div>
+                    );
+                  })}
+              </div>
+            </>
           </div>
         </div>
       </div>
