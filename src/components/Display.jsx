@@ -176,7 +176,6 @@ const Display = () => {
 
       <div className="row">
         <h1>Schedule for Users</h1>
-        {console.log({ selection })}
         <br />
         <div className="row">
           <div className="col-md-3"></div>
@@ -201,20 +200,33 @@ const Display = () => {
           </div>
           <br />
           <div className="row">
-            <div className="col-md-12">TEST</div>
-            <>
+            <div className="col-md-12">Known Languages:</div>
+            <div className="row">
               <div>
-                Known Languages: 
                 {queryUserLanguage.isSuccess &&
                   queryUserLanguage.data.map((item, idx) => {
                     return (
-                      <div key={idx} id={idx} value={item.name}>
-                        {item}
-                      </div>
+                      <UserDetails
+                        key={idx}
+                        id={idx}
+                        value={item.name}
+                        selection={selection}
+                        item={item}
+                      />
+
+                      // <div
+                      //   key={idx}
+                      //   id={idx}
+                      //   value={item.name}
+                      //   selection={selection}
+                      //   item={item}
+                      // >
+                      //   {item}
+                      // </div>
                     );
                   })}
               </div>
-            </>
+            </div>
           </div>
         </div>
       </div>
