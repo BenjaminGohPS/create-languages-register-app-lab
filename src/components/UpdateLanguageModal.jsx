@@ -45,20 +45,14 @@ const OverLay = (props) => {
         <br />
 
         <div className="row">
-          <div className="col-md-3"></div>
-          <div className="col-md-3">Language</div>
-          <div
-            ref={nameRef}
-            type="text"
-            className="col-md-3"
-            defaultValue={props.name}
-          />
-          <div className="col-md-3"></div>
+          <div className="col-md-4"></div>
+          <div className="col-md-4">Language</div>
+          <div className="col-md-4"></div>
         </div>
 
         <div className="row">
-          <div className="col-md-2"></div>
-          <div className="col-md-6">
+          <div className="col-md-4"></div>
+          <div className="col-md-4">
             <select
               id={"selection"}
               className="col-md-6"

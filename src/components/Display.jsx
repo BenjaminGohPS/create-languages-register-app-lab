@@ -180,11 +180,11 @@ const Display = () => {
         <h1>Schedule for Users</h1>
         <br />
         <div className="row">
-          <div className="col-md-2"></div>
-          <div className="col-md-6">
+          <div className="col-md-5"></div>
+          <div className="col-md-2">
             <select
               id={"selection"}
-              className="col-md-6"
+              className="col-md-12"
               onChange={handleSelectionChange}
               value={selection}
             >
