@@ -177,7 +177,7 @@ const Display = () => {
       <br />
 
       <div className="row">
-        <h1>Schedule for Users</h1>
+        <h1>Skillset of Users</h1>
         <br />
         <div className="row">
           <div className="col-md-5"></div>
