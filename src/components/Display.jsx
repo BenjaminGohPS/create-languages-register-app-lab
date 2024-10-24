@@ -3,12 +3,14 @@ import Languages from "./Languages";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Users from "./Users";
 import UserDetails from "./UserDetails";
+import UpdateLanguageModal from "./UpdateLanguageModal";
 
 const Display = () => {
   const queryClient = useQueryClient();
   const languageRef = useRef();
   const nameRef = useRef();
   const [selection, setSelection] = useState();
+  const [showUpdateLanguageModal, setShowUpdateLanguageModal] = useState(false);
 
   const getData = async () => {
     const res = await fetch(import.meta.env.VITE_SERVER + "/lab/languages");
@@ -178,7 +180,7 @@ const Display = () => {
         <h1>Schedule for Users</h1>
         <br />
         <div className="row">
-          <div className="col-md-3"></div>
+          <div className="col-md-2"></div>
           <div className="col-md-6">
             <select
               id={"selection"}
@@ -195,8 +197,18 @@ const Display = () => {
                   );
                 })}
             </select>
-
-            <div className="col-md-3"></div>
+          </div>
+          <div className="col-md-1">
+            {showUpdateLanguageModal && (
+              <UpdateLanguageModal
+                selection={selection}
+                setShowUpdateLanguageModal={setShowUpdateLanguageModal}
+                query={query}
+              />
+            )}
+            <button onClick={() => setShowUpdateLanguageModal(true)}>
+              Add
+            </button>
           </div>
           <br />
           <div className="row">
